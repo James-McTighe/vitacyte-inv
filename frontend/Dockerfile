@@ -2,12 +2,16 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
+
 RUN npm install
+
+RUN npm i -g serve
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run build
 
-# Vite requires explicit host definition to bind properly inside a container
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+EXPOSE 3000
+
+CMD [ "serve", "-s", "dist" ]
